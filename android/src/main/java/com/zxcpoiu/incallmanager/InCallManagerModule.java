@@ -858,6 +858,10 @@ public class InCallManagerModule extends ReactContextBaseJavaModule implements L
             }
         });
     }
+    @ReactMethod
+    public void initManager() {
+        proximityManager.initManager();
+    }
 
     @ReactMethod
     public void setSpeakerphoneOn(final boolean enable) {
@@ -1106,7 +1110,6 @@ public class InCallManagerModule extends ReactContextBaseJavaModule implements L
                             }
                         }, seconds * 1000);
                     }
-
                     Looper.loop();
                 } catch(Exception e) {
                     wakeLockUtils.releasePartialWakeLock();
@@ -1114,7 +1117,6 @@ public class InCallManagerModule extends ReactContextBaseJavaModule implements L
                 }
             }
         };
-
         thread.start();
     }
 

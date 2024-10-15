@@ -38,7 +38,9 @@ public class InCallProximityManager {
     private Method mPowerManagerRelease;
     private boolean proximitySupported = false;
     private AppRTCProximitySensor proximitySensor = null;
-
+    private Context context;
+    private InCallManagerModule inCallManager;
+    private boolean isInit = false;
     /** Construction */
     static InCallProximityManager create(Context context, final InCallManagerModule inCallManager) {
         return new InCallProximityManager(context, inCallManager);
@@ -46,16 +48,21 @@ public class InCallProximityManager {
 
     private InCallProximityManager(Context context, final InCallManagerModule inCallManager) {
         Log.d(TAG, "InCallProximityManager");
+        this.context = context;
+        this.inCallManager = inCallManager;
+    }
+    public void initManager() {
+        if (this.isInit) return;
+        this.isInit = true;
         checkProximitySupport(context);
         if (proximitySupported) {
             UiThreadUtil.runOnUiThread(() -> {
                 proximitySensor = AppRTCProximitySensor.create(context, () -> {
-                    inCallManager.onProximitySensorChangedState(proximitySensor.sensorReportsNearState());               
+                    inCallManager.onProximitySensorChangedState(proximitySensor.sensorReportsNearState());
                 });
             });
         }
     }
-
     private void checkProximitySupport(Context context) {
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) == null) {

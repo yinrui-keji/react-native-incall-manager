@@ -7,7 +7,7 @@ declare class InCallManager {
   };
 
   constructor();
-
+  initManager():void
   start(setup?: {
     auto?: boolean;
     media?: "video" | "audio";

@@ -14,7 +14,11 @@ class InCallManager {
             busytone: { _BUNDLE_: null, _DEFAULT_: null},
         };
     }
-
+    initManager() {
+        if (Platform.OS == 'android' && _InCallManager.initManager) {
+            _InCallManager.initManager();
+        }
+    }
     start(setup) {
         setup = (setup === undefined) ? {} : setup;
         let auto = (setup.auto === false) ? false : true;
